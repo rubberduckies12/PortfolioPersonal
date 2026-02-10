@@ -45,8 +45,13 @@ const allProjects = [
 
 export default function PortfolioPage() {
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    const mq = window.matchMedia('(min-width: 769px)');
+    const apply = () => {
+      document.body.style.overflow = mq.matches ? 'hidden' : '';
+    };
+    apply();
+    mq.addEventListener('change', apply);
+    return () => { document.body.style.overflow = ''; mq.removeEventListener('change', apply); };
   }, []);
 
   const projectLogos: LogoItem[] = useMemo(() => allProjects.map((p) => ({

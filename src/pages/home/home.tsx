@@ -109,10 +109,15 @@ export default function Home() {
     return () => { if (el) el.style.overflow = ''; };
   }, [typingComplete]);
 
-  // Prevent body scroll — all scrolling happens inside snap container
+  // Prevent body scroll — all scrolling happens inside snap container (desktop only)
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    const mq = window.matchMedia('(min-width: 769px)');
+    const apply = () => {
+      document.body.style.overflow = mq.matches ? 'hidden' : '';
+    };
+    apply();
+    mq.addEventListener('change', apply);
+    return () => { document.body.style.overflow = ''; mq.removeEventListener('change', apply); };
   }, []);
 
   // Delay before showing buttons after typing completes

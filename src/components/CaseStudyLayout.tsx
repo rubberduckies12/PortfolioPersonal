@@ -40,8 +40,13 @@ export default function CaseStudyLayout({ project }: { project: ProjectData }) {
   const canonicalUrl = `https://tommyrowe.dev${router.asPath}`;
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    const mq = window.matchMedia('(min-width: 769px)');
+    const apply = () => {
+      document.body.style.overflow = mq.matches ? 'hidden' : '';
+    };
+    apply();
+    mq.addEventListener('change', apply);
+    return () => { document.body.style.overflow = ''; mq.removeEventListener('change', apply); };
   }, []);
 
   const featureLogos: LogoItem[] = useMemo(() => project.features.map((feature) => ({
