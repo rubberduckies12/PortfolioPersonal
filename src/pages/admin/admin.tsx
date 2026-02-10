@@ -5,7 +5,7 @@ export default function AdminPage() {
   return (
     <>
       <Head>
-        <title>Admin | Tommy Rowe</title>
+        <title>Admin | Tommy Rowe Portfolio</title>
       </Head>
       <section className="section">
         <div className="container">
