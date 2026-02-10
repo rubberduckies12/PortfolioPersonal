@@ -167,15 +167,14 @@
   top: var(--header-height);
   left: 0;
   right: 0;
-  bottom: 0;
+  height: calc(100dvh - var(--header-height));
   background: var(--color-bg-alt);
-  padding: var(--space-2xl) var(--space-xl);
-  z-index: 99;
+  padding: var(--space-xl);
+  z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  justify-content: center;
+  gap: var(--space-sm);
 }
 
 .mobileNavLink {

@@ -81,6 +81,21 @@ export default function Header() {
     setMobileOpen(false);
   }, [router.pathname]);
 
+  // Lock page scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [mobileOpen]);
+
   // Also update indicator on route change complete (after page transitions)
   useEffect(() => {
     const handleRouteChange = () => {
@@ -105,6 +120,7 @@ export default function Header() {
   };
 
   return (
+    <>
     <header className={styles.header}>
       <div className={styles.headerInner}>
         <Link href="/" className={styles.logo}>
@@ -159,39 +175,40 @@ export default function Header() {
           </button>
         </div>
       </div>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className={styles.mobileMenu}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={mobileMenuVariants}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {navItems.map((item, i) => (
-              <motion.div
-                key={item.href}
-                custom={i}
-                variants={mobileLinkVariants}
-                initial="closed"
-                animate="open"
-                exit="closed"
-              >
-                <Link
-                  href={item.href}
-                  className={`${styles.mobileNavLink} ${isActive(item.href) ? styles.mobileNavLinkActive : ''}`}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <span className={styles.mobileNavNumber}>0{i + 1}</span>
-                  {item.label}
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
+
+    <AnimatePresence>
+      {mobileOpen && (
+        <motion.div
+          className={styles.mobileMenu}
+          initial="closed"
+          animate="open"
+          exit="closed"
+          variants={mobileMenuVariants}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {navItems.map((item, i) => (
+            <motion.div
+              key={item.href}
+              custom={i}
+              variants={mobileLinkVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+            >
+              <Link
+                href={item.href}
+                className={`${styles.mobileNavLink} ${isActive(item.href) ? styles.mobileNavLinkActive : ''}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                <span className={styles.mobileNavNumber}>0{i + 1}</span>
+                {item.label}
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }
